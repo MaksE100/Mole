@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<style type="text/css">
+		.backg {
+			position: absolute;
+			height: 40px;
+			width: 100px;
+			background-image: url(back.png);
+			background-size: 100% 100%
+
+		}
+		.prop {
+			position: absolute;
+			height: 100px;
+			width: 100px;
+			background-image: url(hole.png);
+			background-size: 100% 100%
+
+		}
+		.mole {
+			position: absolute;
+			height: 100px;
+			width: 50px;
+		}
+	</style>
+</head>
+<body>
+
+<!-- дивы норы чтобы появится -->
+<h1 style="margin-left: 0px">Score:<span class="score">0</span></h1>
+<h1 style="position: absolute; top: 80px">Time:<span class="timer">30</span></h1>
+
+<div class="backg" style="top: 80px; left: 500px;"></div>
+<div class="backg" style="top: 80px; left: 700px;"></div>
+<div class="backg" style="top: 80px; left: 900px;"></div>
+
+<div class="backg" style="top: 280px; left: 500px;"></div>
+<div class="backg" style="top: 280px; left: 700px;"></div>
+<div class="backg" style="top: 280px; left: 900px;"></div>
+
+<div class="backg" style="top: 480px; left: 500px;"></div>
+<div class="backg" style="top: 480px; left: 700px;"></div>
+<div class="backg" style="top: 480px; left: 900px;"></div>
+
+<div class="prop first" style="top: 100px; left: 500px"></div>
+<div class="prop" style="top: 100px; left: 700px"></div>
+<div class="prop" style="top: 100px; left: 900px"></div>
+
+<div class="prop first" style="top: 300px; left: 500px"></div>
+<div class="prop" style="top: 300px; left: 700px"></div>
+<div class="prop" style="top: 300px; left: 900px"></div>
+
+<div class="prop first" style="top: 500px; left: 500px"></div>
+<div class="prop" style="top: 500px; left: 700px"></div>
+<div class="prop" style="top: 500px; left: 900px"></div>
+
+
+
+
+<script type="text/javascript">
+	let firstNora = document.querySelector(".first");
+	let holesX = [526, 726, 926]
+	let holesY = [100, 300, 500]
+	let types = ["good","bad"]
+	let score = document.querySelector(".score")
+	let timer = document.querySelector(".timer")
+    let N = 30
+	let point = 0
+
+	let createMole = function(){
+			let mole = document.createElement('div');
+			document.body.appendChild(mole);
+			mole.classList.add("mole");
+			firstNora.before(mole);;
+			mole.style.left = "500px";
+
+			let randomX = Math.round(Math.random()*2)
+			mole.style.left = holesX[randomX] + "px"
+
+			let randomY = Math.round(Math.random()*2)
+			mole.style.top = holesY[randomY] + "px"
+
+			randomType = Math.round(Math.random())
+			mole.type = types[randomType]
+
+			if(mole.type == 'good')
+			{
+				mole.style.backgroundImage = 'url(mole.png)'
+				mole.style.backgroundSize = '100% 100%'
+			}
+			else
+			{
+				mole.style.backgroundImage = 'url(bomb.png)'
+				mole.style.backgroundSize = '100% 100%'
+			}
+
+			mole.onclick = function()
+			{
+				if(mole.type == 'good')
+				{
+					point = point + 1
+					score.innerHTML = point
+					mole.style.top = holesY[randomY] + "px"
+					mole.style.transition = "0.2s"
+				}
+				else
+				{
+					mole.style.display = "none"
+					point = point - 1
+					score.innerHTML = point
+				}
+
+			}
+
+			let up = function(){
+				mole.style.top = holesY[randomY] - 100 + "px"
+				mole.style.transition = "2s"
+			}
+			setTimeout(up, 1000)
+
+			let down = function(){
+				mole.style.top = holesY[randomY] + "px"
+				mole.style.transition = "1s"
+			}
+			setTimeout(down, 2000)
+		}
+	let Timer = function(){
+        N = N - 1
+        timer.innerHTML = N
+        if(N == 0){
+            clearInterval(interv1)
+            if(point > 10){
+                alert("you win")
+            }else{
+                alert("You lose")
+            }
+        }
+    }
+
+		setInterval(createMole, 600)
+		interv1 = setInterval(Timer, 1000)
+
+</script>
+</body>
+</html>
